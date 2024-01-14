@@ -23,5 +23,6 @@ public final class Book {
     @Column(name = "is_handled")
     private Boolean isHandled = Boolean.FALSE;
 
-
+//    @ManyToOne
+//    private User user;
 }

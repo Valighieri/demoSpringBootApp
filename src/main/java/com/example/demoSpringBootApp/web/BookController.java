@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @Slf4j
@@ -32,9 +34,37 @@ public class BookController {
     @GetMapping("/books/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public Book getBookById(@PathVariable Integer id){
-        log.debug("saveBook() - start: book id = {}", id);
+        log.debug("getBookById() - start: book id = {}", id);
         Book response = bookService.getById(id);
-        log.debug("saveBook() - stop: book = {}", response);
+        log.debug("getBookById() - stop: book = {}", response);
         return response;
     }
+
+    @GetMapping("/books")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<Book> getAllBooks(){
+        log.debug("getAllBooks() - start:");
+        List<Book> response = bookService.getAll();
+        log.debug("getAllBooks() - stop:");
+        return response;
+    }
+
+    @GetMapping("/books/hidden/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Book getHiddenBookById(@PathVariable Integer id){
+        log.debug("getHiddenBookById() - start: book id = {}", id);
+        Book response = bookService.getHiddenBookById(id);
+        log.debug("getHiddenBookById() - stop: book = {}", response);
+        return response;
+    }
+
+    @GetMapping("/books/hidden")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<Book> getAllHiddenBooks(){
+        log.debug("getAllHiddenBooks() - start:");
+        List<Book> response = bookService.getAllHidden();
+        log.debug("getAllHiddenBooks() - stop:");
+        return response;
+    }
+
 }

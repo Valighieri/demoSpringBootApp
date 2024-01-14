@@ -6,6 +6,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class BookServiceBean implements BookService {
@@ -31,6 +33,20 @@ public class BookServiceBean implements BookService {
                 .filter(entity -> !isBookPresent(entity))
                 .orElseThrow(() -> new EntityNotFoundException
                         ("Book doesn't exist or available with id = " + id));
+    }
+
+    @Override
+    public List<Book> getAll() {
+        return bookRepository.findAll().stream()
+                .filter(this::isBookPresent)
+                .toList();
+    }
+
+    @Override
+    public List<Book> getAllHidden() {
+        return bookRepository.findAll().stream()
+                .filter(book -> !isBookPresent(book))
+                .toList();
     }
 
 
