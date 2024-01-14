@@ -22,9 +22,19 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     public Book saveBook(@RequestBody BookDto bookDto){
         log.debug("saveBook() - start: book = {}", bookDto);
-        var book = bookMapper.toBook(bookDto);
-        var response = bookService.create(book);
+        Book response = bookService.create(
+                bookMapper.toBook(bookDto)
+        );
         log.debug("saveBook() - stop: book_id = {}", response.getId());
+        return response;
+    }
+
+    @GetMapping("/books/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Book getBookById(@PathVariable Integer id){
+        log.debug("saveBook() - start: book id = {}", id);
+        Book response = bookService.getById(id);
+        log.debug("saveBook() - stop: book = {}", response);
         return response;
     }
 }

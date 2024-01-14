@@ -22,9 +22,30 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@RequestBody UserDto userDto){
         log.debug("saveUser() - start: user = {}", userDto);
-        var user = userMapper.toUser(userDto);
-        var response = userService.create(user);
+        User response = userService.create(
+                userMapper.toUser(userDto)
+        );
         log.debug("saveUser() - stop: user id = {}", response.getId());
+        return response;
+    }
+
+    @PatchMapping("/users/books/borrow")
+    @ResponseStatus(HttpStatus.OK)
+    public User borrowBook(@RequestParam Integer userId,
+                           @RequestParam Integer bookId){
+        log.debug("borrowBook() - start: user id = {}", userId);
+        User response = userService.borrowBook(userId, bookId);
+        log.debug("borrowBook() - stop: user = {}", response);
+        return response;
+    }
+
+    @PatchMapping("/users/books/return")
+    @ResponseStatus(HttpStatus.OK)
+    public User returnBook(@RequestParam Integer userId,
+                           @RequestParam Integer bookId){
+        log.debug("returnBook() - start: user id = {}", userId);
+        User response = userService.returnBook(userId, bookId);
+        log.debug("returnBook() - stop: user = {}", response);
         return response;
     }
 }
