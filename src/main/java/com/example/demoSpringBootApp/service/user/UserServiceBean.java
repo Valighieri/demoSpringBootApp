@@ -1,4 +1,4 @@
-package com.example.demoSpringBootApp.service;
+package com.example.demoSpringBootApp.service.user;
 
 import com.example.demoSpringBootApp.domain.User;
 import com.example.demoSpringBootApp.repository.UserRepository;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class UserServiceBean implements UserService{
+public class UserServiceBean implements UserService {
 
     private final UserRepository userRepository;
 

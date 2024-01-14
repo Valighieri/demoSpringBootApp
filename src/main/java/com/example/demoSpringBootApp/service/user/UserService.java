@@ -1,4 +1,4 @@
-package com.example.demoSpringBootApp.service;
+package com.example.demoSpringBootApp.service.user;
 
 import com.example.demoSpringBootApp.domain.User;
 

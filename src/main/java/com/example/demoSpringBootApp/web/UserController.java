@@ -1,7 +1,7 @@
 package com.example.demoSpringBootApp.web;
 
 import com.example.demoSpringBootApp.domain.User;
-import com.example.demoSpringBootApp.service.UserService;
+import com.example.demoSpringBootApp.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ public class UserController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@RequestBody User user){
-        log.debug("saveUser() - start: user name = {}", user.getName());
+        log.debug("saveUser() - start: user = {}", user);
         var response = userService.create(user);
         log.debug("saveUser() - stop: user id = {}", response.getId());
         return response;
