@@ -13,4 +13,6 @@ public interface HistoryService {
     History getById(Integer historyId);
 
     List<User> getAllWithDebts();
+
+    List<Book> getTopFiveBooks();
 }

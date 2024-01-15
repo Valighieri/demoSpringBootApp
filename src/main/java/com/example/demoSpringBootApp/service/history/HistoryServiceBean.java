@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -33,10 +35,33 @@ public class HistoryServiceBean implements HistoryService {
     @Override
     public List<User> getAllWithDebts() {
         return historyRepository.findAllByReturnDateNotEmpty().stream()
-                .filter(this::isLate).map(entity -> entity.getUser()).toList();
+                .filter(history -> LocalDate.now().isAfter(
+                        history.getBorrowDate().plusMonths(1))
+                ).map(entity -> entity.getUser()).toList();
     }
 
-    private boolean isLate(History history) {
-        return LocalDate.now().isAfter(history.getBorrowDate().plusMonths(1));
+    @Override
+    public List<Book> getTopFiveBooks() {
+        return getTopFive(
+                historyRepository.findAllByDateLastYear(
+                        LocalDate.of(LocalDate.now().getYear() - 1, 1, 1),
+                        LocalDate.of(LocalDate.now().getYear() - 1, 12, 31)
+                ).stream().map(history -> history.getBook()).toList()
+        );
+    }
+
+    private List<Book> getTopFive(List<Book> list) {
+        // sorting must be here
+        return list;
     }
 }
+
+
+
+
+
+
+
+
+
+
