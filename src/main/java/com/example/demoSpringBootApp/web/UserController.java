@@ -48,23 +48,23 @@ public class UserController {
 
     @PatchMapping("/users/books/return")
     @ResponseStatus(HttpStatus.OK)
-    public UserReadDto returnBook(@RequestParam Integer userId,
-                                  @RequestParam Integer bookId) {
+    public UserReadDto returnBook(@RequestParam Integer historyId) {
         log.debug("returnBook() - start: ");
         UserReadDto response = userMapper.toUserReadDto(
-                userService.returnBook(userId, bookId)
+                userService.returnBook(historyId)
         );
         log.debug("returnBook() - stop: ");
         return response;
     }
 
-    @GetMapping("/users/books/late")
+    @GetMapping("/users/books/inactive")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserReadDto> getAllUsersWithDebts() {
-        log.debug("getAllUsersWithDebts() - start: ");
-        List<User> users = userService.getAllWithDebts();
-        List<UserReadDto> response = userMapper.toListUserReadDto(users);
-        log.debug("getAllUsersWithDebts() - stop: ");
+    public List<UserReadDto> getAllInactiveUsers(){
+        log.debug("getAllInactiveUsers() - start: ");
+        List<UserReadDto> response = userMapper.toListUserReadDto(
+                userService.getAllInactiveUsers()
+        );
+        log.debug("getAllInactiveUsers() - stop: ");
         return response;
     }
 }

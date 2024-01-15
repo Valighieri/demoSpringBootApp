@@ -15,6 +15,7 @@ import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -50,18 +51,21 @@ public class UserServiceBean implements UserService {
     }
 
     @Override
-    public User returnBook(Integer userId, Integer bookId) {
+    public User returnBook(Integer historyId) {
+        History history = historyService.getById(historyId);
+        Integer userId = history.getUser().getId();
+        Integer bookId = history.getBook().getId();
+
         return userRepository.findById(userId)
                 .map(entity -> {
                     Book book = bookService.getHiddenBookById(bookId);
 
                     if (entity.getBooks().contains(book)) {
                         book.setIsHandled(Boolean.FALSE);
-
                         entity.getBooks().remove(book);
+                        history.setReturnDate(LocalDate.now());
                     } else throw new UserWithoutThatBookException
                             ("User doesn't have book with id = " + bookId);
-
                     return userRepository.save(entity);
                 })
                 .orElseThrow(() -> new EntityNotFoundException
@@ -69,18 +73,20 @@ public class UserServiceBean implements UserService {
     }
 
     @Override
-    public List<User> getAllWithDebts() {
-        return userRepository.findAllByBooksIsHandled().stream()
-                .filter(this::isLate).toList();
+    public List<User> getAllInactiveUsers() {
+        return userRepository.findAll()
+                .stream().filter(this::IsInactive).toList();
     }
 
-    private boolean isLate(User user){
-        boolean isLate = false;
-        for (History h : user.getHistories()){
-            if (h.getReturnDate() != null) continue;
-            isLate = LocalDate.now().isAfter(h.getBorrowDate().plusMonths(1));
-            if (isLate) break;
+    private boolean IsInactive(User user) {
+        log.debug("user id = {}", user.getId());
+        for (History h : user.getHistories()) {
+            if (h.getBorrowDate().isAfter(LocalDate.now().minusYears(1))) {
+                log.debug("IsInactive "  + false);
+                return false;
+            }
         }
-        return isLate;
+        log.debug("IsInactive" + true);
+        return true;
     }
 }

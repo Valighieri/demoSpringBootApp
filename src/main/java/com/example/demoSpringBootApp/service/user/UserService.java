@@ -10,7 +10,7 @@ public interface UserService {
 
     User borrowBook(Integer userId, Integer bookId);
 
-    User returnBook(Integer userId, Integer bookId);
+    User returnBook(Integer historyId);
 
-    List<User> getAllWithDebts();
+    List<User> getAllInactiveUsers();
 }
