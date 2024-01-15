@@ -2,6 +2,7 @@ package com.example.demoSpringBootApp.web;
 
 import com.example.demoSpringBootApp.domain.Book;
 import com.example.demoSpringBootApp.dto.BookDto;
+import com.example.demoSpringBootApp.dto.BookReadDto;
 import com.example.demoSpringBootApp.service.book.BookService;
 import com.example.demoSpringBootApp.util.mappers.BookMapper;
 import lombok.AllArgsConstructor;
@@ -22,47 +23,50 @@ public class BookController {
 
     @PostMapping("/books")
     @ResponseStatus(HttpStatus.CREATED)
-    public Book saveBook(@RequestBody BookDto bookDto){
-        log.debug("saveBook() - start: book = {}", bookDto);
-        Book response = bookService.create(
-                bookMapper.toBook(bookDto)
-        );
-        log.debug("saveBook() - stop: book_id = {}", response.getId());
+    public BookReadDto saveBook(@RequestBody BookDto bookDto){
+        log.debug("saveBook() - start:");
+        Book book = bookService.create(bookMapper.toBook(bookDto));
+        BookReadDto response = bookMapper.toBookReadDto(book);
+        log.debug("saveBook() - stop:");
         return response;
     }
 
     @GetMapping("/books/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Book getBookById(@PathVariable Integer id){
-        log.debug("getBookById() - start: book id = {}", id);
-        Book response = bookService.getById(id);
-        log.debug("getBookById() - stop: book = {}", response);
+    public BookReadDto getBookById(@PathVariable Integer id){
+        log.debug("getBookById() - start:");
+        Book book = bookService.getById(id);
+        BookReadDto response = bookMapper.toBookReadDto(book);
+        log.debug("getBookById() - stop:");
         return response;
     }
 
     @GetMapping("/books")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<Book> getAllBooks(){
+    public List<BookReadDto> getAllBooks(){
         log.debug("getAllBooks() - start:");
-        List<Book> response = bookService.getAll();
+        List<Book> books = bookService.getAll();
+        List<BookReadDto> response = bookMapper.toListBookReadDto(books);
         log.debug("getAllBooks() - stop:");
         return response;
     }
 
     @GetMapping("/books/hidden/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Book getHiddenBookById(@PathVariable Integer id){
-        log.debug("getHiddenBookById() - start: book id = {}", id);
-        Book response = bookService.getHiddenBookById(id);
-        log.debug("getHiddenBookById() - stop: book = {}", response);
+    public BookReadDto getHiddenBookById(@PathVariable Integer id){
+        log.debug("getHiddenBookById() - start: ");
+        Book book = bookService.getHiddenBookById(id);
+        BookReadDto response = bookMapper.toBookReadDto(book);
+        log.debug("getHiddenBookById() - stop: ");
         return response;
     }
 
     @GetMapping("/books/hidden")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<Book> getAllHiddenBooks(){
+    public List<BookReadDto> getAllHiddenBooks(){
         log.debug("getAllHiddenBooks() - start:");
-        List<Book> response = bookService.getAllHidden();
+        List<Book> books = bookService.getAllHidden();
+        List<BookReadDto> response = bookMapper.toListBookReadDto(books);
         log.debug("getAllHiddenBooks() - stop:");
         return response;
     }

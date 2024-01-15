@@ -1,5 +1,7 @@
 package com.example.demoSpringBootApp.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +28,12 @@ public final class User {
     @Column(name = "email")
     private String email;
 
+    @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Set<Book> books = new HashSet<>();
+
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<History> histories = new HashSet<>();
 }

@@ -1,6 +1,9 @@
 package com.example.demoSpringBootApp.service.user;
 
+import com.example.demoSpringBootApp.domain.Book;
 import com.example.demoSpringBootApp.domain.User;
+
+import java.util.List;
 
 public interface UserService {
     User create(User user);
@@ -8,4 +11,6 @@ public interface UserService {
     User borrowBook(Integer userId, Integer bookId);
 
     User returnBook(Integer userId, Integer bookId);
+
+    List<User> getAllWithDebts();
 }

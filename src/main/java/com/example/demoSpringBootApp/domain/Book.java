@@ -1,5 +1,7 @@
 package com.example.demoSpringBootApp.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +25,7 @@ public final class Book {
     @Column(name = "is_handled")
     private Boolean isHandled = Boolean.FALSE;
 
-//    @ManyToOne
-//    private User user;
+    @JsonManagedReference
+    @ManyToOne
+    private User user;
 }
